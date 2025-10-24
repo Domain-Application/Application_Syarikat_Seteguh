@@ -1,0 +1,5 @@
+Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=BEGITU;Data Source=copper;
+--Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ACRES;Data Source=SKY\MSSQLSERVER2008;
+
+
+

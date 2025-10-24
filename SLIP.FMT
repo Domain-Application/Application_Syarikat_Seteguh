@@ -1,0 +1,23 @@
+M2x1
+
+
+                                            @DRIVERE@TICKETF
+E@COADD1F
+E@COADD2F
+E@COADD3F        @DONO  E@LORRYF   @RATE    @TERM PE@DATEFM
+
+x23
+3"
+      E@ACCODEF                      @PRODUCT @TIMEIN            PE@FIRSTFM
+
+                                                         @TIMEOUT            PE@SECONDFM
+E@NAMEF
+E@ADD1F                 @DIFF            PE@WASTAGEFM
+E@ADD2F
+E@ADD3F                                     PE@NETFM
+
+      @PORLA
+      @EXPIRED
+
+x03
+    @REM

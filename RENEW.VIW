@@ -1,0 +1,15 @@
+--START FILE
+
+@date1
+Expiry Date
+Expiry Date As On:
+
+DROP VIEW RENEW
+
+CREATE VIEW RENEW
+AS
+SELECT * 
+FROM ACCODE
+WHERE [EXPIRED] <= @date1 OR [EXPIRED] IS NULL
+
+--END FILE

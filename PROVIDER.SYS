@@ -1,0 +1,10 @@
+Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=seteguh;Data Source=lawrence-pc;
+
+
+Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=kencana;Data Source=SKY\sqlexpress2008r2;
+
+--Provider=SQLOLEDB.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=bakti_jawa;Data Source=SKY\sqlexpress2008r2;
+
+
+
+

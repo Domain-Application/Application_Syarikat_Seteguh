@@ -1,0 +1,17 @@
+P0
++-------+----------+-------+----------------------+----------+-----------------+
+| DN NO | LORRY NO | RATE% |        PRODUCT       |   TIME : |   WEIGHT (KG):  |
++-------+----------+-------+----------------------+----------+-----------------+
+| @DN|@LORRY| @RATE | @PTNAME | @TIMEIN | GROSS   :@GROSS |
++-------+----------+-------+----------------------+----------+-----------------+
+Porla No : @PORLA Expired Date: @EDATE | @TIMEOUT | TARE    :@TARE |
+Location : @LOCATION +----------+-----------------+
+Remarks  : @REM | @DURATION | WASTAGE :@WASTAGE |
+                                                  +----------+-----------------+
+                                                  |          | NET     :@NET |
+                                                  +----------+-----------------+2
+                                                  | Tinggal/Plg  Bil.   MT P/T |
+                                                  | Muda         @MUDA1 @MUDA2 |
+                                                  | Busuk        @BUSUK1 @BUSUK2 |
+_______________        __________________         | T.PANJANG    @HUJAN1 @HUJAN2 |
+ISSUED BY              RECEIVED BY                +----------------------------+

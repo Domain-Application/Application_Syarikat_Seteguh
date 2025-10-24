@@ -1,0 +1,131 @@
+// MainFrm.cpp : implementation of the CMainFrame class
+//
+
+#include "stdafx.h"
+#include "menu.h"
+#include "MainFrm.h"
+#include "Staff.h"
+#include "about.h"
+#include <io.h>
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// CMainFrame
+
+extern void CheckUserRight(DB *user,int key);
+IMPLEMENT_DYNCREATE(CMainFrame, CMyFrame)
+
+BEGIN_MESSAGE_MAP(CMainFrame, CMyFrame)
+	//{{AFX_MSG_MAP(CMainFrame)
+	ON_WM_CREATE()
+	ON_WM_INITMENU()
+    ON_COMMAND(ID_USER, OnUser)
+    ON_COMMAND(ID00011,On00001)
+    ON_COMMAND(ID00012,On00001)
+    ON_COMMAND(ID00013,On00001)
+    ON_COMMAND(ID00014,On00001)
+	ON_COMMAND(ID00015,On00001)
+	ON_COMMAND(ID00016,On00001)
+	ON_COMMAND(ID00181,On00001)
+	ON_COMMAND(ID00182,On00001)
+	ON_COMMAND(ID00183,On00001)
+	ON_COMMAND(ID00184,On00001)
+	ON_COMMAND(ID00185,On00001)
+	ON_COMMAND(ID00261,On00001)
+	ON_COMMAND(ID00262,On00001)
+	ON_COMMAND(ID00263,On00001)
+	ON_COMMAND(ID00264,On00001)
+	ON_COMMAND(ID00265,On00001)
+    ON_COMMAND(ID00024,On00001)
+    ON_COMMAND(ID00141,On00001)
+    ON_COMMAND(ID01411,On00001)
+    ON_COMMAND(ID01412,On00001)
+    ON_COMMAND(ID01461,On00001)
+    ON_COMMAND(ID01462,On00001)
+    ON_COMMAND(ID02411,On00001)
+    ON_COMMAND(ID02412,On00001)
+    ON_COMMAND(ID02461,On00001)
+    ON_COMMAND(ID02462,On00001)
+    ON_COMMAND(ID00142,On00001)
+    ON_COMMAND(ID00143,On00001)
+    ON_COMMAND(ID00144,On00001)
+    ON_COMMAND(ID00145,On00001)
+    ON_COMMAND(ID00146,On00001)
+    ON_COMMAND(ID00021,On00001)
+    ON_COMMAND(ID00022,On00001)
+    ON_COMMAND(ID00023,On00001)
+    ON_COMMAND(ID00241,On00001)
+    ON_COMMAND(ID00242,On00001)
+    ON_COMMAND(ID00243,On00001)
+    ON_COMMAND(ID00244,On00001)
+    ON_COMMAND(ID00245,On00001)
+    ON_COMMAND(ID00246,On00001)
+    ON_COMMAND(ID00031,On00001)
+    ON_COMMAND(ID00032,On00001)
+    ON_COMMAND(ID00033,On00001)
+    ON_COMMAND(ID00034,On00001)
+    ON_COMMAND(ID00035,On00001)
+    ON_COMMAND(ID00036,On00001)
+    ON_COMMAND(ID00041,OnPassword)
+    ON_COMMAND(ID00042,On00001)
+    ON_COMMAND(ID00043,On00001)
+    ON_COMMAND(ID00044,On00001)
+    ON_COMMAND(ID00046,On00001)
+    ON_COMMAND(ID00051,On00001)
+    ON_COMMAND(ID00052,On00001)
+    ON_COMMAND(ID00053,On00001)
+    ON_COMMAND(ID00054,On00001)
+	ON_COMMAND(ID00311,On00001)
+	ON_COMMAND(ID00312,On00001)
+	ON_COMMAND(ID00313,On00001)
+	ON_COMMAND(ID00314,On00001)
+	ON_COMMAND(ID00315,On00001)
+	ON_COMMAND(ID00316,On00001)
+	ON_COMMAND(ID00317,On00001)	
+	ON_COMMAND(ID00331,On00001)	
+	ON_COMMAND(ID00332,On00001)	
+	ON_COMMAND(ID00651,On00001)	
+	ON_COMMAND(ID00652,On00001)	
+	
+	//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CMainFrame construction/destruction
+
+CMainFrame::CMainFrame()
+{
+    m_System.Format("%s Weighing System Ver 1.00", title);
+    bCommOpen = TRUE;
+}
+
+void CMainFrame::OnOpenOtherFiles()
+{
+    HWND hWnd = GetSafeHwnd();
+    BOOL bOpen = SetCommThread(hWnd,FALSE);
+    if(bOpen==FALSE) {
+    }
+}
+
+void CMainFrame::OnClose()
+{
+    CloseCommThread();
+    CMyFrame::OnClose();
+}
+
+void CMainFrame::AddProfileHiddenPoint(int &j)
+{
+	/*
+	HiddenPoint[j++] = 11;
+	HiddenPoint[j++] = 13;
+	HiddenPoint[j++] = 21;
+	HiddenPoint[j++] = 23;
+	*/
+
+}

@@ -1,0 +1,17 @@
+P0
++-------+----------+-------+----------------------+----------+-----------------+
+| DN NO | LORRY NO | RATE% |        PRODUCT       |   TIME : |   WEIGHT (KG):  |
++-------+----------+-------+----------------------+----------+-----------------+
+| @DN|@LORRY| @RATE | @PTNAME | @TIMEIN | GROSS   :@GROSS |
++-------+----------+-------+----------------------+----------+-----------------+
+Porla No : @PORLA Expired Date: @EDATE | @TIMEOUT | TARE    :@TARE |
+Location : @LOCATION +----------+-----------------+
+Remarks  : @REM | @DURATION | WASTAGE :@WASTAGE |
+U/Price  : @PRICE        Transport Fee: @TFEE +----------+-----------------+
+Gross Amt: @GROSSAMT      Harvest   Fee: @HFEE |          | NET     :@NET |
+FFB Amt  : E@FFBAMTF                              +----------+-----------------+2
+Subsidy  : E@SAMTF                              | Tinggal/Plg  Bil.   MT P/T |
+Total Amt: E@TOTALAMTF                              | Muda         @MUDA1 @MUDA2 |
+                                                  | Busuk        @BUSUK1 @BUSUK2 |
+_______________        __________________         | T. PANJANG   @HUJAN1 @HUJAN2 |
+ISSUED BY              RECEIVED BY                +----------------------------+

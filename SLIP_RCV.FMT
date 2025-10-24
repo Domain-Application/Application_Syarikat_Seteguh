@@ -1,0 +1,30 @@
+PtE%Title% (@CONO)F
+@COADD1
+@COADD2
+@COADD3
+
+E@CAPTIONF
+ДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДД
+SUPPLIER      : @ANAME TICKET NO:E@TICKETF
+PRODUCT NAME  : @PTNAME VEHICLE NO:M@LORRYP
+TRANSPORTER   : @TNAME TRAILER NO:@TRAILER
+DRIVER        : @D1NAME I/C NO: M@D1ICP
+
+PORLA LICENCE : @PORLA_NO       EXPIRY DATE : @EDATE
+D/N NO        : @DN   CONTRACT NO : @CONTRACT
+LPO NO        : @GSNO              PACKING     : @PACKING
+NUMBER OF SEAL: @SEALS
+REMARKS       : @REM
+
+FIRST WEIGHT  : @FIRST KG       TIME IN        : @DATE_IN @TIMEIN
+SECOND WEIGHT : @SECOND KG       TIME OUT       : @DATE @TIMEOUT
+NET WEIGHT    : E@NET KGF       PERSON ON DUTY : @USERNAME
+SUPPLIER WT.  : E@SW KGF
+VARIANCE WT.  : E@VAR KGF
+ДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДДД
+
+
+M
+________________________       ________________________        ________________________
+CHECK BY                       PERSON ON DUTY                  DRIVER
+                               @USERNAME       @D1NAMEP
