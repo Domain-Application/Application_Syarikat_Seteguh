@@ -7,6 +7,8 @@
 #include "mgrid.h"
 #include <afxctl.h>
 #include "picture.h"
+#include "accode.h"
+#include "einv.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,9 +61,95 @@ int tell_accode(UINT nChar,int &id,int &fld,DB *df,int sq)
 	}
 	return 1;
 }
+
+CAccode::CAccode(UINT IDD,DB *pdf,int Idx,CWnd* pParent /*=NULL*/)
+    : CStaff(IDD,pdf,Idx,pParent)
+{
+    df->m_CannotAdd = TRUE;
+}
+
+
+void CAccode::DoDataExchange(CDataExchange* pDX)
+{
+    CStaff::DoDataExchange(pDX);
+}
+
+BEGIN_MESSAGE_MAP(CAccode, CStaff)
+    ON_BN_CLICKED(IDC_BUTTON1, OnEinv)
+END_MESSAGE_MAP()
+
+void AccodeEntry()
+{     
+    CAccode p1(IDD_ACCODE,&accode,1);
+    p1.DoModal();
+}
+
+int Accode_AdminDb(DB *df,int flag)
+{
+    AccodeEntry();
+    return 1;
+}
+
+
 void init_accode(DB *df)
 {
     df->e->rep       = ReplaceAccodeGrid;
     df->e->GridTitle = SetAccodeGridTitle;
 	df->e->tell		 = tell_accode;
+    df->e->AdminDb   = Accode_AdminDb;
+}
+
+int tell_einv_view(UINT nChar,int &id,int &fld,DB *df,int sq)
+{
+    switch(fld) {
+    case 10:
+        if(sq)
+        {
+            qd(df->dat[GetDbFieldNo(df, "POSTCODE")], &postcode);
+            lset(df->dat[GetDbFieldNo(df, "MALAYSIA_STATE")], postcode.dat[GetDbFieldNo(&postcode, "MALAYSIA_STATE")]);
+            lset(df->dat[GetDbFieldNo(df, "MALAYSIA_CITY")], postcode.dat[GetDbFieldNo(&postcode, "CITY_NAME")]);
+        }
+        break;
+	default:
+		break;
+    }
+    return 2;
+}
+
+void init_einv_view(DB *df)
+{
+	df->e->tell = tell_einv_view;
+}
+
+void CAccode::OnEinv() 
+{
+    if(SaveFlag == NEWFILE){
+        long nrec = getdelrec(df, FALSE);
+        save_entry(NONEXIST,IdxItem,nrec,df);
+		SaveFlag = OLDFILE;
+		ShowInformation();
+    }
+	if( SaveFlag == CANNOTSAVE) return;
+    CString strSQL,dbName;
+	dbName.Format("%s_einv", df->name);
+    DB adoTmp;
+    strSQL.Format("select * from %s where %s = '%s'", dbName, df->fieldName[1], df->dat[1]); //Note: create a view where contains code, field from TIN UNTIL EINV_EMAIL
+    ado(&adoTmp, dbName, init_einv_view, strSQL);
+    long rec = read_sumindex(0, &adoTmp);
+    if(rec <= 0)
+    {
+		dclose(&adoTmp);
+        return;
+    }
+    readrec(1, &adoTmp);
+    CEinv p;
+    p.df = &adoTmp;
+    p.isFFBProgram = TRUE;
+    UINT ID = p.DoModal();
+    if(ID == IDOK)
+    {
+        fetch(df, &adoTmp);
+    }
+    dclose(&adoTmp);
+	ShowInformation();
 }

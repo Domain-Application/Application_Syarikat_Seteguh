@@ -14,7 +14,30 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CAutoInvoice dialog
+COleDateTime GetLastDayOfCurrentMonth()
+{
+    COleDateTime now = COleDateTime::GetCurrentTime();
 
+    int year  = now.GetYear();
+    int month = now.GetMonth();
+
+    // Move to first day of next month
+    int nextMonth = month + 1;
+    int nextYear  = year;
+
+    if (nextMonth > 12) {
+        nextMonth = 1;
+        nextYear++;
+    }
+
+    // First day of next month
+    COleDateTime firstNextMonth(nextYear, nextMonth, 1, 0, 0, 0);
+
+    // Last day = one day before the first day of next month
+    COleDateTime lastDay = firstNextMonth - COleDateTimeSpan(1, 0, 0, 0);
+
+    return lastDay;
+}
 
 CAutoInvoice::CAutoInvoice(CWnd* pParent /*=NULL*/)
 	: CDialog(CAutoInvoice::IDD, pParent)
@@ -23,7 +46,7 @@ CAutoInvoice::CAutoInvoice(CWnd* pParent /*=NULL*/)
 	m_d1 = COleDateTime::GetCurrentTime();
 	m_d2 = COleDateTime::GetCurrentTime();
 	m_nextInvoiceNo = _T("");
-	m_invdate = COleDateTime::GetCurrentTime();
+	m_invdate = GetLastDayOfCurrentMonth();
 	//}}AFX_DATA_INIT
 }
 
@@ -78,13 +101,14 @@ void CAutoInvoice::DoPoInvoice()
     FindAddInfoTicketNo(invmain);
     lset(invmain->dat[IVWB_DATE], m_invdate);  
     lset(invmain->dat[IVWB_ACCODE], accode.dat[1]);
-    lset(invmain->dat[IVWB_TERMS], accode.dat[CU_TERMS]);        
+    lset(invmain->dat[IVWB_TERMS], accode.dat[CU_TERMS]);  
+	SetTransactionType(invmain, &accode);
 	//if (Purchase_Flag){
 	lset(invmain->dat[IVWB_REMARKS],"F.F.B TOTAL");        
 	//}
 	CString strTable = (Purchase_Flag) ? "dsinv" : "dpinv";
 	CString str;
-	str.Format("Select [ticket],[qty],[amount] from [%s] where accode='%s' and [date] between %s and %s and [DO] IS NULL and [amount] > 0 order by [ticket]",
+	str.Format("Select [ticket],[qty],[amount], [pt] from [%s] where accode='%s' and [date] between %s and %s and [DO] IS NULL and [amount] > 0 order by [ticket]",
 		strTable,accode.dat[1],   d1, d2);
 	DB adoTmp;
 	ado(&adoTmp, "", NULL, str);
@@ -92,13 +116,24 @@ void CAutoInvoice::DoPoInvoice()
 	if (xrec>0){
 		invmain->AddNew();
 	}
-    for(long rec=1; rec<=xrec; rec++) {
+	for(long rec=1; rec<=xrec; rec++) {
         adoTmp.read(rec);
 		lsetblank(invsub);
 		lset(invsub->dat[1],invmain->dat[1]);
 		lset(invsub->dat[VIWB_DO],adoTmp.dat[1]);
 		rset(invsub->dat[VIWB_QTY],adoTmp.dat[2]);
 		rset(invsub->dat[VIWB_AMOUNT],adoTmp.dat[3]);
+		long irec = qd(adoTmp.dat[4], &prodtype);
+		int fld = 0;
+		if (!strcmp(strTable, "dsinv"))
+		{
+			fld = GetDbFieldNo(&prodtype, "CLASSIFICATION");
+		}
+		else
+		{
+			fld = GetDbFieldNo(&prodtype, "CLASSIFICATION1");
+		}
+		lset(invsub->dat[GetDbFieldNo(invsub, "CLASSIFICATION")], prodtype.dat[fld]);
 		invsub->AddNew();
     }
 	dclose(&adoTmp);

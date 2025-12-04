@@ -19,6 +19,16 @@
 #include "msflexgrid.h"
 //}}AFX_INCLUDES
 
+extern void SetTransactionType(DB *df, DB *accode);
+extern DB  malaysia_state,malaysia_city,postcode;
+extern DB conso_einv, conso_einv_sub;
+extern void Conso_Einv();
+enum {CEINV_REFNO=1,CEINV_DATE,CEINV_D1,CEINV_D2,CEINV_PARTICULAR,CEINV_REMARK,CEINV_PCCODE,
+	  CEINV_CURRENCY,CEINV_RATE,CEINV_CLASS,CEINV_SUBMITDATE,CEINV_UUID,CEINV_URL,CEINV_APPROVE_USER,
+      CEINV_APPROVE_DATE,CEINV_TYPE};
+enum {CEINVS_REFNO=1,CEINVS_SQNO,CEINVS_INVOICE,CEINVS_AMT,CEINVS_NONTAX_AMT,CEINVS_TAXABLE_AMT,CEINVS_TAXCODE,
+	  CEINVS_PERCEN,CEINVS_GST,CEINVS_EXEMPT_AMT,CEINVS_PCCODE,CEINVS_PATH,CEINVS_INVKEY};
+extern DB classification;
 extern BOOL Purchase_Flag;
 extern DB	arinv,apinv,aroinv,apoinv,accpf;
 extern DB  socso;

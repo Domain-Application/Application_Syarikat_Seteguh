@@ -43,6 +43,21 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CIreq message handlers
+void CIreq::OnCreate_Einv_UI()
+{
+    pPage[1] = NULL;
+
+    CRect rcDlgs;
+    GetDlgItem(IDC_EINV_FUNCTIONS)->GetWindowRect(rcDlgs);
+    pPage[1] = new CEINV_Functions;
+    VERIFY(pPage[1]->Create(CEINV_Functions::IDD, this));
+    pPage[1]->df = df;
+    pPage[1]->sub = sub;
+    pPage[1]->MoveWindow(rcDlgs);
+    pPage[1]->ShowWindow(SW_SHOW);
+    ScreenToClient(rcDlgs);
+}
+
 void CIreq::ShowInformation()
 {
     CParent::ShowInformation();
@@ -51,6 +66,7 @@ void CIreq::ShowInformation()
 
 BOOL CIreq::OnInitDialog()
 {
+    OnCreate_Einv_UI();
     CParent::OnInitDialog();
 
     // TODO: Add extra initialization here
@@ -105,6 +121,7 @@ void CIreq::ShowInitFrame(CMSFlexGrid *grid,DB *sub)
     fg.SetTitle("Amount",1000,7);
     fg.SetTitle("Driver",1500);
     fg.SetTitle("Comm.",1000,7);
+    fg.SetTitle("Classification Code",1650,1);
 }
 
 void CIreq::ReplaceSubGrid(long rec,long irec,CMSFlexGrid *m_grid,DB *sub,int IdxItem)
@@ -112,6 +129,7 @@ void CIreq::ReplaceSubGrid(long rec,long irec,CMSFlexGrid *m_grid,DB *sub,int Id
     fg.show(rec);
     fg.SetText(sub,NULL,PI_DN,PI_LORRY,PI_PT,PI_NAME,PI_QTY,
          PI_UNIT,PI_PRICE,PI_AMOUNT,PI_DRIVER,PI_NETCOMM,-1);
+    fg.SetText(sub,GetDbFieldNo(sub,"CLASSIFICATION"));
 }
 
 
@@ -140,6 +158,16 @@ int tell_reqitem(UINT nChar,int &flag,int &fld,DB *df,int sq)
             if(df->name[0]=='r' || df->name[0]=='R') {
                 rset(df->dat[PI_PRICE],prodtype.dat[PT_SPRICE]);
             }
+            int fld = 0;
+            if (!strcmp(df->name, "initem"))
+            {
+                fld = GetDbFieldNo(&prodtype, "CLASSIFICATION");
+            }
+            else
+            {
+                fld = GetDbFieldNo(&prodtype, "CLASSIFICATION1");
+            }
+            lset(df->dat[GetDbFieldNo(df, "CLASSIFICATION")],prodtype.dat[fld]);
         }
         break;
     case PI_AMOUNT:
@@ -184,11 +212,22 @@ int ireq_initial(DB *df,int *fld)                //initial setting
 	return 1;
 }
 
+int ireq_tell(UINT nChar,int &id,int &fld,DB *df,int sq)
+{
+    switch(fld){
+	case IQ_ACCODE:
+        SetTransactionType(df, &accode);
+		break;
+	}
+	return 2;
+}
+
 void init_ireq(DB *df)
 {
     df->e->start = start_ireq;
     df->e->initial = ireq_initial;
     df->e->save = ireq_save;
+    df->e->tell = ireq_tell;
 }
 
 int start_ientry(DB *df)
@@ -203,4 +242,5 @@ void init_ientry(DB *df)
     df->e->start = start_ientry;
     df->e->initial = ireq_initial;
     df->e->save = ireq_save;
+    df->e->tell = ireq_tell;
 }

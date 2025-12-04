@@ -5,6 +5,9 @@
 #include "admindb.h"
 #include "Profile.h"
 #include "Wb.h"
+#include "Cmprofile.h"
+#include "accode.h"
+#include "Conso_Einv.h"
 
 enum menu {M_RECEIVE=1,M_DESPATCH,M_CTRL,M_UTIL,M_OTHER,M_INV,M_SALARY,M_NORMAL,M_PUBLIC};
 enum kkk1 {M_REPORT = M_RECEIVE * 10 +4 };
@@ -18,6 +21,19 @@ enum kkk8 {M_EXPINV   = M_INV * 10 +5 };
 
 
 int STCR = 1;
+
+void AdminDb_CMProfile(DB *df)
+{
+    if(df->ID==0) {
+        AfxMessageBox("Database not open");
+        return;
+    }
+    CCmprofile p1(IDD_CMPROFILE,df,df->f[1].idx & 0x01);
+    p1.LptNo = 0; //preview
+	p1.OneRecordOnly = TRUE;
+    p1.DoModal();
+}
+
 void AdminTicketDb(DB *df)
 {
     if(df->ID==0) {
@@ -157,6 +173,14 @@ int CMenuApp::SubProgram(int key)
     case M_UTIL*10+6:
         CleanDatabase();
         break;
+    case M_UTIL*10+7:
+		{
+			DB adoTmp(IDD_CMPROFILE);
+			ado(&adoTmp, "profile_einv");
+			AdminDb_CMProfile(&adoTmp);
+			dclose(&adoTmp);
+		}
+        break;
 	case M_CTRL1 * 10 +1:
 		AdminDb(&prodtype);
 		break;
@@ -179,8 +203,13 @@ int CMenuApp::SubProgram(int key)
 		AdminDb(&reason);
 		break;
 	case M_CTRL2 * 10 +1:
-		AdminDb(&accode);
-		break;
+		// AdminDb(&accode);
+        {
+            CAccode h1(IDD_ACCODE, &accode, 1);
+            h1.DoModal();
+        }
+
+        break;
 	case M_CTRL2 * 10 +2:
 		AdminDb(&driver);
 		break;
@@ -202,6 +231,11 @@ int CMenuApp::SubProgram(int key)
 	case M_CTRL3 * 10 +2:
 		AdminDb(&socso);
 		break;	
+    case M_CTRL * 10 + 4:
+    {
+        Conso_Einv();
+        break;
+    }
     case M_OTHER*10+1:
         AdminDbIreq(&ireq,&reqitem);
         break;

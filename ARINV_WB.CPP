@@ -26,6 +26,27 @@ CArinvWb::CArinvWb(UINT IDD,DB *pdf, int Idx,CWnd* pParent /*=NULL*/)
     ExtraButton1 = IDC_BUTTON1;
 }
 
+void CArinvWb::OnCreate_Einv_UI()
+{
+    pPage[1] = NULL;
+
+    CRect rcDlgs;
+    GetDlgItem(IDC_EINV_FUNCTIONS)->GetWindowRect(rcDlgs);
+    pPage[1] = new CEINV_Functions;
+    VERIFY(pPage[1]->Create(CEINV_Functions::IDD, this));
+    pPage[1]->df = df;
+    pPage[1]->sub = sub;
+    pPage[1]->MoveWindow(rcDlgs);
+    pPage[1]->ShowWindow(SW_SHOW);
+    ScreenToClient(rcDlgs);
+}
+
+BOOL CArinvWb::OnInitDialog()
+{
+    OnCreate_Einv_UI();
+    CParent::OnInitDialog();
+	return TRUE;
+}
 
 void CArinvWb::DoDataExchange(CDataExchange* pDX)
 {
@@ -67,6 +88,10 @@ BOOL CArinvWb::IsCannotEdit()
 
 void CArinvWb::ShowInformation()
 {   
+    if (pPage[1])
+    {
+        pPage[1]->ShowInformation();
+    }
     ReFreshSubFile();
     CParent::ShowInformation();    
 }
@@ -82,6 +107,7 @@ void CArinvWb::ShowInitFrame()
     fg.SetTitle("DN No",1200,1);
     fg.SetTitle("Qty(kg)",1200,7);
     fg.SetTitle("Amount",1200,7);
+    fg.SetTitle("Classification Code",1650,1);
 }
 
 void CArinvWb::ReplaceSubGrid(long rec,long irec,CMSFlexGrid *m_grid,DB *sub,int IdxItem)
@@ -94,6 +120,7 @@ void CArinvWb::ReplaceSubGrid(long rec,long irec,CMSFlexGrid *m_grid,DB *sub,int
         fg.SetText(&receive,Date,LORRY,DN,-1);
         fg.SetText(sub,VIWB_QTY);
         fg.SetText(sub,VIWB_AMOUNT);
+        fg.SetText(sub,GetDbFieldNo(sub,"CLASSIFICATION"));
     }
 	else{
         qq(sub->dat[VIWB_DO],&despatch);
@@ -101,6 +128,7 @@ void CArinvWb::ReplaceSubGrid(long rec,long irec,CMSFlexGrid *m_grid,DB *sub,int
         fg.SetText(&despatch,Date,LORRY,DN,-1);
         fg.SetText(sub,VIWB_QTY);
         fg.SetText(sub,VIWB_AMOUNT);
+        fg.SetText(sub,GetDbFieldNo(sub,"CLASSIFICATION"));
     }
 }
 
@@ -146,7 +174,21 @@ void PurchaseInvoiceWb()
 	//	SetAttribute(TRUE,TRUE);
 }
 
-
+void SetTransactionType(DB *df, DB *accode)
+{
+	if (!strcmp(df->name, "ARINV_WB")) 
+ 	{
+		lset(df->dat[GetDbFieldNo(df, "einv_tt")], "IV");
+	} 
+	else if(!strcmp(df->name, "APINV_WB") && accode->Boolean(GetDbFieldNo(accode, "SELFBILL")))
+    {
+        lset(df->dat[GetDbFieldNo(df, "einv_tt")], "IV");
+    } 
+    else
+	{
+		lset(df->dat[GetDbFieldNo(df, "einv_tt")], "S");
+	}
+}
 
 int tell_aroinv_wb(UINT nChar,int &id,int &fld,DB *df,int sq)
 {
@@ -194,6 +236,7 @@ int tell_arinv_wb(UINT nChar,int &id,int &fld,DB *df,int sq)
 			qd(df->dat[fld],&accode);
 			lset(df->dat[IVWB_TERMS],accode.dat[CU_TERMS]);			
 		}
+        SetTransactionType(df, &accode);
 		break;
 	}
 	return 2;
@@ -237,6 +280,20 @@ void CArinvWb::OnCreateNewInvoice()
         lset(sub->dat[VIWB_DO], invwb.dat[1]);
         rset(sub->dat[VIWB_QTY], invwb.dat[5]);
         rset(sub->dat[VIWB_AMOUNT], invwb.dat[6]);
+        irec = qd(invwb.dat[GetDbFieldNo(&invwb,"PT")], &prodtype);
+        int fld = 0;
+        if(!strcmp(strTable, "dsinv"))
+        {
+            fld = GetDbFieldNo(&prodtype,"CLASSIFICATION");
+        }
+        else
+        {
+            fld = GetDbFieldNo(&prodtype,"CLASSIFICATION1");
+        }
+        if(irec > 0)
+        {
+            lset(sub->dat[GetDbFieldNo(sub,"CLASSIFICATION")], prodtype.dat[fld]);
+        }
         sub->AddNew();
         ReFreshSubFile();
         ShowInformation();

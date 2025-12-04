@@ -18,6 +18,11 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+DB  malaysia_state;
+DB  malaysia_city;
+DB  postcode;
+DB  conso_einv, conso_einv_sub, classification;
+
 DB first(IDD_RECEIVE),prodtype(IDD_PT,4);
 DB Status(IDD_STATUS),gst(IDD_GWST),stype;
 DB *ttt;
@@ -168,6 +173,7 @@ void CMenuApp::SetDBRelations()
 	despatch.m_MACMask[TIMEOUT] = "2#:5#:5#";
 	cashbill.m_MACMask[TIMEIN] = "2#:5#:5#";
 	cashbill.m_MACMask[TIMEOUT] = "2#:5#:5#";
+
 }
 
 void solve_state(FILE *ptr,int line,FM *fm,char *text)
@@ -228,6 +234,12 @@ void CMenuApp::OpenAllDataFile()
     }
 	//tado(&arinv,"arinv");	
     //tado(&apinv,"apinv");
+    ado(&malaysia_state,"malaysia_state");
+    ado(&malaysia_city,"malaysia_city");
+    ado(&postcode,"postcode");
+    tado(&conso_einv, "conso_einv");
+    tado(&conso_einv_sub, "conso_einv_sub");
+    ado(&classification, "classification");
     tado(&aroinv_wb,"aroinv_wb",init_aroinv_wb);
     tado(&arinv_wb,"arinv_wb",init_arinv_wb);
     tado(&apoinv_wb,"apoinv_wb",init_aroinv_wb);

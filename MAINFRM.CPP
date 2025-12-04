@@ -101,7 +101,7 @@ END_MESSAGE_MAP()
 
 CMainFrame::CMainFrame()
 {
-    m_System.Format("%s Weighing System Ver 1.00", title);
+    m_System.Format("%s Weighing System Ver 2.00", title); // 2.00 e-inv version
     bCommOpen = TRUE;
 }
 

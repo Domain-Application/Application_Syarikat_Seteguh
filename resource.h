@@ -167,6 +167,9 @@
 #define IDD_EPF_RATE                    571
 #define IDD_AUTOINV                     572
 #define IDD_PR                          574
+#define IDD_CONSO_EINV                  577
+#define IDD_CONSO_EINV_SUB              578
+#define IDD_EINVMSG                     579
 #define IDD_TSO                         649
 #define IDC_GLNAME                      1053
 #define IDC_GLCODE                      1056
@@ -290,6 +293,11 @@
 #define IDC_MASKEDREMK                  1219
 #define IDC_MASKEDBOX21                 1220
 #define IDC_MASKEDGLTITLE               1221
+#define IDC_NETAMT                      1222
+#define IDC_LOCK                        1223
+#define IDC_LOCK2                       1224
+#define IDC_EINVSTATUS                  1225
+#define IDC_DOC_MSG                     1226
 #define IDC_COMPANY_CODE                1236
 #define IDC_IMAGE2                      1237
 #define IDC_ANIMATION1                  1238
@@ -334,6 +342,7 @@
 #define IDC_L24                         1272
 #define IDC_L25                         1273
 #define IDC_L26                         1274
+#define IDC_EINV_FUNCTIONS              1275
 #define IDC_BAL                         2131
 #define ID_BACK                         32839
 #define ID_EXIT                         32840
@@ -353,8 +362,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        577
-#define _APS_NEXT_COMMAND_VALUE         32910
+#define _APS_NEXT_RESOURCE_VALUE        580
+#define _APS_NEXT_COMMAND_VALUE         32911
 #define _APS_NEXT_CONTROL_VALUE         1256
 #define _APS_NEXT_SYMED_VALUE           104
 #endif

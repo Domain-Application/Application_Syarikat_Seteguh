@@ -10,6 +10,7 @@
 // DT.h : header file
 //
 #include "parent.h"
+#include "EINV_Functions.h"
 /////////////////////////////////////////////////////////////////////////////
 // CArinvWb dialog
 
@@ -46,6 +47,9 @@ protected:
 	afx_msg void OnCreateNewInvoice();
 	afx_msg void OnUnlock();
 	afx_msg void OnDblClickMsflexgrid1();
+	virtual void OnCreate_Einv_UI();
+	virtual BOOL OnInitDialog();
+	CEINV_Functions *pPage[1];
 	DECLARE_EVENTSINK_MAP()
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

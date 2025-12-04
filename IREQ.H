@@ -8,6 +8,7 @@
 //
 
 #include "Parent.h"
+#include "EINV_Functions.h"
 /////////////////////////////////////////////////////////////////////////////
 // CIreq dialog
 
@@ -44,6 +45,8 @@ protected:
     virtual BOOL OnInitDialog();
     afx_msg void OnDestroy();
     afx_msg void OnTimer(UINT nIDEvent);
+    virtual void OnCreate_Einv_UI();
+	CEINV_Functions *pPage[1];
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
