@@ -60,6 +60,10 @@ void CIreq::OnCreate_Einv_UI()
 
 void CIreq::ShowInformation()
 {
+    if (pPage[1])
+    {
+        pPage[1]->ShowInformation();
+    }
     CParent::ShowInformation();
 }
 

@@ -169,7 +169,6 @@
 #define IDD_PR                          574
 #define IDD_CONSO_EINV                  577
 #define IDD_CONSO_EINV_SUB              578
-#define IDD_EINVMSG                     579
 #define IDD_TSO                         649
 #define IDC_GLNAME                      1053
 #define IDC_GLCODE                      1056
@@ -233,12 +232,10 @@
 #define IDC_NAME31                      1125
 #define IDC_CRTOTAL                     1131
 #define IDC_DRTOTAL                     1132
-#define IDC_REFNO                       1134
 #define IDC_STAFF                       1135
 #define IDC_VEHICLE                     1136
 #define IDC_PARTICULAR                  1137
 #define IDC_REMARK                      1138
-#define IDC_DATE                        1139
 #define IDC_TERMS                       1140
 #define IDC_PONO                        1141
 #define IDC_CANCEL                      1142
@@ -297,7 +294,6 @@
 #define IDC_LOCK                        1223
 #define IDC_LOCK2                       1224
 #define IDC_EINVSTATUS                  1225
-#define IDC_DOC_MSG                     1226
 #define IDC_COMPANY_CODE                1236
 #define IDC_IMAGE2                      1237
 #define IDC_ANIMATION1                  1238
