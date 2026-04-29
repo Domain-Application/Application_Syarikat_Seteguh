@@ -176,14 +176,10 @@ void PurchaseInvoiceWb()
 
 void SetTransactionType(DB *df, DB *accode)
 {
-	if (!strcmp(df->name, "ARINV_WB")) 
+	if (!strcmp(df->name, "ARINV_WB") || !strcmp(df->name, "IREQ") || !strcmp(df->name, "IENTRY") || (!strcmp(df->name, "APINV_WB") && accode->Boolean(GetDbFieldNo(accode, "SELFBILL"))) )
  	{
 		lset(df->dat[GetDbFieldNo(df, "einv_tt")], "IV");
 	} 
-	else if(!strcmp(df->name, "APINV_WB") && accode->Boolean(GetDbFieldNo(accode, "SELFBILL")))
-    {
-        lset(df->dat[GetDbFieldNo(df, "einv_tt")], "IV");
-    } 
     else
 	{
 		lset(df->dat[GetDbFieldNo(df, "einv_tt")], "S");

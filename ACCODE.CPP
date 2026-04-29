@@ -65,7 +65,6 @@ int tell_accode(UINT nChar,int &id,int &fld,DB *df,int sq)
 CAccode::CAccode(UINT IDD,DB *pdf,int Idx,CWnd* pParent /*=NULL*/)
     : CStaff(IDD,pdf,Idx,pParent)
 {
-    df->m_CannotAdd = TRUE;
 }
 
 
@@ -149,6 +148,7 @@ void CAccode::OnEinv()
     if(ID == IDOK)
     {
         fetch(df, &adoTmp);
+		df->Update();
     }
     dclose(&adoTmp);
 	ShowInformation();
