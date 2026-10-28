@@ -3,7 +3,7 @@
 > English edition (authoritative). Last verified against commit `2af24e3` ("Fixed Customer code not allowed to create and unable to update einvoice profile and revised auto default transaction type", 2026-04-29).
 > Translation status: zh-CN copy not started.
 > Rule: any change to behaviour, tables, fields, screens, reports or calculations must update this reference in the same commit.
-> This repository is the **base of a pair**: `Application_Nibong_Jaya` is a near copy of the same program (see the last section, [Differences from Application_Syarikat_Seteguh](#differences-from-application_syarikat_seteguh)).
+> This repository is the **base of a pair**: `Application_Nibong_Jaya` is a near copy of the same program (see the last section, [Related repository](#related-repository)).
 
 **What this program is.** The weighbridge and trading program of **Syarikat Seteguh**, a buyer and seller of oil palm fruit (fresh fruit bunches, "FFB") and related products. It is a VC6 / MFC program on the shared wlib32 framework (the same family as the other weighbridge apps). One menu program does everything: it weighs lorries in and out (receiving, despatch, normal and public weighing), prices the loads, pays suppliers and receives money from buyers, raises purchase and sales invoices (including the Malaysian **MyInvois e-invoice**, with a consolidated e-invoice), books "other product" invoices, keeps stock reports and runs a small **payroll** for the drivers and harvesters who are paid commission on the tonnage they carry. The repository has no `User_Guide` folder, no other `docs` file and no SQL schema repository, so no screenshots exist and every database type below is marked as unverified unless an old dBASE header gives it.
 
@@ -20,7 +20,7 @@
   - [2.4 Sub-table hierarchy](#24-sub-table-hierarchy) / [2.5 Modules and process flows](#25-modules-and-process-flows) / [2.6 End-to-end flows](#26-end-to-end-flows)
   - [2.7 Report catalogue](#27-report-catalogue) / [2.8 Integrations](#28-integrations) / [2.9 Configuration](#29-configuration) / [2.10 Maintenance](#210-maintenance)
 - [Dormant code](#dormant-code) / [User rights](#user-rights) / [Not yet documented](#not-yet-documented) / [Code findings](#code-findings)
-- [Differences from Application_Syarikat_Seteguh (checklist for copy jobs)](#differences-from-application_syarikat_seteguh)
+- [Related repository](#related-repository)
 
 ## Menu map and coverage
 
@@ -1894,66 +1894,6 @@ None of these was changed. **CONFIRMED** = read directly in the code (and the li
 
 ---
 
-## Differences from Application_Syarikat_Seteguh
+## Related repository
 
-**Purpose of this section.** This repository is the **base of a pair**. `Application_Nibong_Jaya` (the copy) is to be documented as "this reference plus its differences": copy this file, re-verify every `file:line` against the copy's own code, rewrite what the copy does differently, and put a section called **Differences from Application_Syarikat_Seteguh** near the top of the copy's reference. Nothing here is subtracted for the base itself.
-
-**Warning from the first look.** The task description called the copy "near identical (2 source file names differ)". The names are nearly identical, but **36 files differ in content** and the copy is the **older code line**: it has no e-invoice at all, has a `company_no` switch for a dozen customers, single weighing, and a SIP payroll contribution. Plan this as a real rewrite of the e-invoice, weighing and payroll parts, not a search and replace.
-
-### First-look comparison (done 2026-10-23, CRLF-normalised, file names matched case-insensitively, not analysed further)
-
-| | This repo | Copy (`Application_Nibong_Jaya`) |
-|---|---|---|
-| Git history | 4 commits, latest `2af24e3` (2026-04-29) | 1 commit `823204d` "first commit" (2026-04-12) |
-| Tracked files | 591 | 588 |
-| Names present in both | 585 | 585 |
-| Files with different content | 36 | 36 |
-| `.cpp` files on disk / in `menu.dsp` | 55 / 39 | 55 / 39 (`CLEAN.CPP` in place of `Conso_Einv.cpp`; the same 16 `.cpp` files are not built) |
-| Menu leaf items | 63 | 62 (no 34 Consolidate E-invoice Entry, no 47 E-Invoice Profile; extra 333 SIP Table) |
-| Dialogs in the main `.rc` | 53 | 53 (`IDD_CONSO_EINV`, `IDD_CONSO_EINV_SUB` missing; `IDD_GW2`, `IDD_SIP` extra) |
-
-**Only in this repo (6):** `Conso_Einv.cpp`, `Conso_Einv.h`, `ACCODE.h`, `apinv_wb.SET`, `data/BEGITU.zip`, the junk file `AA`.
-
-**Only in the copy (3):** `CLEAN.CPP` (three functions `OverWriteFacile`, `CleanFacile`, `CleanGWST`: SQL that rewrites `first`, `net`, `w1`, `z1`, `z2`, `w2` of a ticket table and resets the deduction presets; called only from `RestoreAndCleanGWST` in `GWEDIT.CPP:55`), `ERR` (a junk file), `res/default1.bin`.
-
-**Byte-identical `.cpp` and `.h` files (these carry over unchanged, with the same line numbers):** `BatchScr.cpp`, `Miller.cpp`, `Scr_Update.cpp`, `ShortFigure.cpp`, `ToCash.cpp`, `ResetPassword.cpp`, `SLIP.CPP`, `STATE.CPP`, `TITLE.CPP`, `RENEW.CPP`, `LOGERR.CPP`, `LOGO.CPP`, `MENUVIEW.CPP`, `Month.cpp`, `Exp_inv.cpp`, `Exp_Pinv.cpp`, `PASS.CPP`, `PUBLIC.CPP`, `STDAFX.CPP` and the 13 not-built files (`Chkvar.cpp`, `CUST.CPP`, `Daily.cpp`, `DETGTN.CPP`, `Fc.cpp`, `Fchange.cpp`, `MASTER.CPP`, `PFORM.CPP`, `PRODTYPE.CPP`, `PT.CPP`, `PTYPE.CPP`, `Slip2.cpp`, `STDSHOW.CPP`, `SV.CPP`, `Tscr.cpp`, `UNIT.CPP`), plus `CATEGORY.CPP`, `DETAIL.CPP`, `GST.CPP`; headers `AutoInvoice.h`, `BatchScr.h`, `Miller.h`, `Month.h`, `Scr_Update.h`, `ShortFigure.h`, `MAINFRM.H`, `MENUVIEW.H`, `WB.H`, `WRCV.H`, `GwEdit.h`, `Logerr.h`, `PROFILE.H`, `ResetPassword.h`, `Receive.h`, `TSCR.H`, `Daily.h`, `FChange.h`. Findings 2, 10, 14 and 17 of this document and the sections 2.5.4, 2.5.5, 2.5.13 (reset) and 2.5.15 therefore carry over.
-
-| File | Changed lines (diff output) | What differs at first look |
-|---|---|---|
-| `MENU.CPP` | 213 | Copy: no `malaysia_*`, `postcode`, `conso_einv*`, `classification` objects and opens; adds `DB sip(IDD_SIP)` and `ado(&sip,"sip")`; adds `int company_no` and a block of 12 customer names, each with `company` and `company_no` (the active one is NIBONG JAYA SAWIT SDN. BHD., 2022-10-04, `company_no = 8`; the others are commented out); `m_Local1Instance`, `m_manifest`, `HideStaffMenu = 99990`, `m_useDropDownBtnInsteadSrollbar`, `level_Adoarange_Advance_Button`; `RptResetFiles` handles `STCR == 4` (`wb` to `pr`); no `ConfirmCrystalTableFile`; `SetTitleColor` added; `ToDisplay` reads `MinWt` from `logo` (`1000`, or `500` for `company_no == 5`) and writes `KG` in capitals; the deduction code is different |
-| `MENU.H` | 24 | Copy: no `CEINV_*`, `CEINVS_*` enums, `SetTransactionType`, `Conso_Einv`; adds `sip`, `GwstKeyStatus`, `RestoreAndCleanGWST`, `MyProgId`; driver enum has `DR_SIP`, `DR_SIP_COMM` |
-| `MAIN.CPP` | 73 | Copy: no `AdminDb_CMProfile`, no case 47 and no case 34; case `M_CTRL3*10+3` opens `sip`; `STCR` is set to 1 or 2 around each receiving or despatch case, **3** around the normal weighing cases and **4** around the public ones (this repo uses 1 for menus 8 and 9); reads `GetKeyState(VK_END)` into `GwstKeyStatus` and stores `MyProgId = key` at the start of every `SubProgram`; case 321 is `AdminDb(&accode)` |
-| `MAINFRM.CPP` | 67 | Copy has far fewer `ON_COMMAND` lines (the commands are handled by the library map) and a different title line (check it) |
-| `MENU.RC` / `menu.rc` | 1,225 | Menu: no 34, no 47, extra 333; dialogs: `IDD_GW2`, `IDD_SIP` instead of `IDD_CONSO_EINV`, `IDD_CONSO_EINV_SUB`; the invoice, other-product and customer dialogs have no e-invoice panel, no Transaction Type box, no Classification boxes and no **E-Invoices** button; payment and advance dialogs have a **Particular** button |
-| `WB.CPP` | 45 | Copy: `m_WhileEditNoPrint`; the net weight is also computed with a zero second weight when `company_no == 5`; `WB_initial` makes `FIRST` and `SECOND` read-only unless the End key was held (`GwstKeyStatus`), and for `company_no` 3 and 7 below levels 5 and 3; `start_receive` uses `SetCurrentTime` and sets product `01`; `receive_save` sets `OnErrorJumpTo` and does **not** require an owner for `wb` and `pr` |
-| `WEIGHING.CPP` | 63 | Copy: `SingleWeighing`, window `IDD_GW2` for `company_no == 5`, `CGetWt(IDD)`, `p1.wb`, `df->e->initial` read-only list, `OnPrintTicket` through `CPrintProgress` for `company_no == 5` and `autoCancelDeductWeight`; the `Vehicle not found` message is missing |
-| `WRCV.CPP` | 51 | Copy: asks "Do you want single weighing ?" and uses `LO_TARE` as the second weight; `FIRST` and `SECOND` kept in the field lists with `company_no` and level conditions |
-| `GETWT.CPP`, `GETWT.H` | 99, 14 | Copy: `CGetWt(UINT IDD)`, `wb` pointer, `M_BUSY`, caption painter, `OnDestroy`, `OnViewIssueTickets`; no bitmap OK / Cancel buttons |
-| `GwEdit.cpp` | 57 | Copy: calls `RestoreAndCleanGWST` and uses `GwstKeyStatus` |
-| `PROFILE.CPP` | 4 | Copy: hides **Set GWST** unless `UserLevel() == 6885` and the End key was held |
-| `SALARY.CPP`, `SALARY.H` | 28, 4 | Copy: `sip` table, function `SIP`, fields `Sl_SIP_B`, `Sl_SIP_S`; `Sl_TOTAL` and `Sl_NET_EARN` include them |
-| `ADVANCE.*`, `PAYMENT.*` | 17 + 8, 16 + 8 | Copy: **Particular** button (`OnParticular`) |
-| `ARINV_WB.*`, `AutoInvoice.*`, `IREQ.*` | 55, 43, 44 | Copy: no e-invoice panel, no `SetTransactionType`, no classification code; auto invoice date is today (not the last day of the month) and the ticket query has no product column |
-| `ACCODE.CPP` | 88 | Copy: no `CAccode` class and no E-Invoices button; `init_accode` only |
-| `menu.dsp` | 80 | Copy lists `CLEAN.CPP` instead of `Conso_Einv.cpp`, adds `GETWT.H`, `WEIGHING.H` and `res/default1.bin`; ClassWizard sections only re-ordered |
-| `PROVIDER.SYS` | - | Different database names and host lines (the copy's first line names a database `euro`); same pattern of active and commented lines; integrated security in both (re-check). **Do not repeat values;** name file and line only |
-| `resource.h`, `Stdafx.h`, `res/MENU.RC2`, `.gitignore` | 18, 1, 1, 2 | IDs, `extern int company_no`, resource include, one ignore line |
-| `DESCTN.SET`, `RCVCTN.SET`, `group.rpt`, `salary.rpt`, `Menu.ncb` | binary | Report container sets and two Crystal files differ; re-dump the container sets with the script used for 2.7 |
-
-### Checklist for the copy job (tick each, write the answer into the copy's reference)
-
-1. **Re-run the folder diff.** Compare the names case-insensitively and the contents with line endings normalised (for example `git ls-files` in both repositories, then `cmp <(tr -d '\r' < a) <(tr -d '\r' < b)`), and compare with the lists above; the repositories may have moved since 2026-10-23. List files that exist in only one repository and files not in the copy's `menu.dsp`.
-2. **Re-read the real build.** Use the copy's `menu.dsp`: which `.cpp` files, the link line, whether `CLEAN.CPP` is compiled, and whether any of the 16 not-built files is listed. Do not assume this document's conclusion in 2.1.
-3. **Menu tree.** Compare `IDR_MAINMENU` in the copy's `menu.rc` with `MAIN.CPP` `SubProgram`: expected differences are 34 and 47 missing and 333 (SIP Table) added. Rebuild the menu map table (62 items?) and check the toolbar.
-4. **Identity and start-up.** Rewrite 2.5.1 from the copy's `MENU.CPP`: the scrambled `company` string and its comment, the `company_no` block (and which customer is active), the extra application flags, the `STCR` values 1 to 4 and `RptResetFiles`, the tables opened, the single-instance and manifest flags, `ToDisplay` and the `MinWt` rule. Re-list every `company_no == n` branch in `WB.CPP`, `WEIGHING.CPP`, `WRCV.CPP`, `GETWT.CPP`, `MENU.CPP` and decide which are live for company 8 (the other branches are dead for this customer but must be listed).
-5. **Tables and enums.** Rewrite 2.3.1 and 2.3.4 from the copy's `MENU.H`: the `sip` table (dialog `IDD_SIP`; its fields use the `socso` enum), driver fields `DR_SIP`, `DR_SIP_COMM`, salary fields `Sl_SIP_B`, `Sl_SIP_S`, and the absence of the e-invoice objects. Check the copy's repository for `sql` or `ToBeUpdate` files and the `_sql` folder first; if none, keep the DBF-header method of this document.
-6. **Weighing engine.** Rewrite 2.5.2 from the copy's `WEIGHING.CPP`, `WRCV.CPP`, `GETWT.CPP`, `WB.CPP`, `GwEdit.cpp`, `PROFILE.CPP`, `CLEAN.CPP`: single weighing and `LO_TARE`, the End-key rule for editing weights (`GwstKeyStatus`), level rules per customer, `IDD_GW2`, the `OnViewIssueTickets` button, `autoCancelDeductWeight`, the relaxed owner check for `wb` and `pr`, and the `Set GWST` rule (level 6885). Re-draw the flow diagram and the state diagram.
-7. **Pricing and updates.** `Miller.cpp`, `Scr_Update.cpp`, `BatchScr.cpp`, `ToCash.cpp` are byte-identical: copy 2.5.4 and 2.5.5 and re-check only the line numbers of the handlers in the copy's `MAIN.CPP`.
-8. **Invoices and e-invoice.** The copy has no e-invoice. Remove or replace 2.5.8, 2.5.9, the e-invoice rows of 2.3.2, 2.8, the e-invoice parts of 2.5.7 and 2.5.10, and Part 1 (1.1 to 1.13: worked example step 5, the e-invoice messages, the glossary terms, the Ask-the-AI group). Check whether the copy's invoice screens still call the library panel. Re-read `AutoInvoice.cpp` (invoice date, columns).
-9. **Payroll.** Rewrite 2.5.11 and Part 1.6 (payroll formulas) for the SIP contribution: `SIP()` uses the `sip` bands, `Sl_TOTAL` and `Sl_NET_EARN` formulas, the salary dialog boxes (check `IDD_SALARY` in the copy's `menu.rc`), and the **Particular** buttons of the payment and advance screens.
-10. **Reports.** Re-dump `*.SET` and `*.GRP` of the copy (`RCVCTN.SET`, `DESCTN.SET` differ; `wbctn`, `prctn` may now map `STCR` 3 and 4), re-run the string scan and the unreferenced-file list, and check `apinv_wb.SET`, which exists only in this repository.
-11. **Secrets.** The copy's `PROVIDER.SYS` has different lines: name the file and line numbers only, never the values; recommend rotation of any password found. Check the copy for committed backups (this repository has `data/BEGITU.zip`, `update.zip` and `ParitYaani/`).
-12. **Part 1 and glossary.** Rewrite the worked example (no e-invoice step, with SIP and, if live, single weighing), the screen tour (weight window `IDD_GW2`, no E-Invoices button, Particular button), the messages (add "Do you want single weighing ?"), the status table, and the level table (the copy's level rules differ).
-13. **Dormant code.** Re-check each item of "Dormant code" in the copy and add new ones (the `company_no` branches, `CleanFacile`, `CleanGWST`, `OverWriteFacile`).
-14. **Code findings.** Re-check findings 1 to 20 against the copy: findings 3, 4, 8, 9, 15 and the e-invoice parts of 18 and 19 do not exist there; findings 2, 10, 14 and 17 are byte-identical code; findings 1, 5, 6, 7, 11, 12 and 13 need the copy's `WB.CPP`, `WEIGHING.CPP`, `GwEdit.cpp` and `SALARY.CPP` read again. Add new findings for `CLEAN.CPP`, `GwstKeyStatus` and the level 6885 rule.
-15. **Run the checkers** (`check_doc.py`, `check_mermaid.mjs`) and update the "Last verified against commit" line and the translation status in the copy's reference.
+`Application_Nibong_Jaya` is a sister program: an older code line of the same program: no e-invoice, a switch for several customers, SIP payroll. Its own reference, `docs/MODULE_REFERENCE.md` in that repository, has a section "Differences from Application_Syarikat_Seteguh" listing every change. When this reference changes, check whether that section is affected.
