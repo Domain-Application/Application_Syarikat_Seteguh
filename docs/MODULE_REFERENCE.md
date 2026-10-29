@@ -1,7 +1,7 @@
 # Application_Syarikat_Seteguh - Module Reference
 
 > English edition (authoritative). Last verified against commit `2af24e3` ("Fixed Customer code not allowed to create and unable to update einvoice profile and revised auto default transaction type", 2026-04-29).
-> Translation status: zh-CN copy not started.
+> Translation status: zh-CN copy in [MODULE_REFERENCE.zh-CN.md](MODULE_REFERENCE.zh-CN.md), synced 2026-10-29 (commit 69b4bcc).
 > Rule: any change to behaviour, tables, fields, screens, reports or calculations must update this reference in the same commit.
 > This repository is the **base of a pair**: `Application_Nibong_Jaya` is a near copy of the same program (see the last section, [Related repository](#related-repository)).
 
@@ -1826,7 +1826,7 @@ There are no `PF_*` switches in this build. The only build-time switches are `_D
 ## 2.10 Maintenance
 
 - **Update rule.** Any change to behaviour, tables, fields, screens, reports or calculations must update this file in the same commit. Re-verify the `file:line` references of the changed area; run `check_doc.py` and `check_mermaid.mjs` (skill `domain-module-reference`).
-- **Last verified against commit** `2af24e3` (2026-04-29). Translation status: zh-CN not started.
+- **Last verified against commit** `2af24e3` (2026-04-29). Translation status: zh-CN written, synced 2026-10-29.
 
 | Date | Commit | Who | What changed |
 |---|---|---|---|
@@ -1865,7 +1865,7 @@ Code that is built but cannot be reached, or files that are not built:
 | The Domain API / MyInvois service | Outside this repository |
 | Screenshots | None in the repository; the program was not run |
 | Exact behaviour of the report-group `USER_LEVEL` and the `.usr` files | Inside the library |
-| zh-CN translation | Not yet written |
+| zh-CN translation | Done, synced 2026-10-29 |
 
 ## Code findings
 
